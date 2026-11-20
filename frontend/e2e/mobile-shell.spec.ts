@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('mobile app shell', () => {
-  test('renders the home page without horizontal scrolling', async ({ page }) => {
+  test('renders the error list without horizontal scrolling', async ({ page }) => {
     await page.goto('/')
-    await expect(page.getByRole('heading', { name: 'Error Vault', level: 1 })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Errors', level: 1 })).toBeVisible()
 
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

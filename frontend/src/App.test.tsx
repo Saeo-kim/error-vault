@@ -1,16 +1,28 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
-describe('App shell', () => {
-  it('renders the home page at /', () => {
+describe('App routes', () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(JSON.stringify([]), { status: 200, headers: { 'Content-Type': 'application/json' } })),
+    )
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('shows the error list at /', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     )
-    expect(screen.getByRole('heading', { name: 'Error Vault' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Errors' })).toBeInTheDocument()
+    expect(await screen.findByText('No errors captured yet.')).toBeInTheDocument()
   })
 
   it('renders the not-found page for unknown routes', () => {
