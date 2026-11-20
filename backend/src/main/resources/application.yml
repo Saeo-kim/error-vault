@@ -1,0 +1,29 @@
+# Default configuration targets local PostgreSQL (see docker-compose.yml).
+# Override any value with environment variables, e.g. SPRING_DATASOURCE_URL.
+spring:
+  application:
+    name: error-vault
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/errorvault}
+    username: ${SPRING_DATASOURCE_USERNAME:errorvault}
+    password: ${SPRING_DATASOURCE_PASSWORD:errorvault}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
