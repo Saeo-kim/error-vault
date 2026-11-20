@@ -1,12 +1,12 @@
-# Default configuration targets local PostgreSQL (see docker-compose.yml).
-# Override any value with environment variables, e.g. SPRING_DATASOURCE_URL.
+# Configuration. Every value can be overridden with environment variables.
+# Local defaults target the Docker Compose PostgreSQL service.
 spring:
   application:
     name: error-vault
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/errorvault}
-    username: ${SPRING_DATASOURCE_USERNAME:errorvault}
-    password: ${SPRING_DATASOURCE_PASSWORD:errorvault}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:errorvault}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USER:errorvault}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:errorvault}}
   jpa:
     open-in-view: false
     hibernate:
@@ -16,7 +16,14 @@ spring:
     locations: classpath:db/migration
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:${PORT:8080}}
+
+app:
+  auth:
+    # Set APP_AUTH_PASSWORD to require sign-in. Blank = no login (local development only).
+    password: ${APP_AUTH_PASSWORD:}
+    secure-cookie: ${APP_AUTH_SECURE_COOKIE:false}
+    session-days: ${APP_AUTH_SESSION_DAYS:30}
 
 management:
   endpoints:
