@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Error Vault</title>
+  <meta name="description" content="Capture, understand, and reuse software errors.">
+  <meta name="theme-color" content="#1e293b">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Error Vault">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Error Vault</h1>
+    <div class="topbar-actions">
+      <button type="button" id="btn-export" class="ghost" aria-label="Export entries">Export</button>
+      <label class="ghost file-label" for="file-import">Import</label>
+      <input type="file" id="file-import" accept="application/json" hidden>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">Add an error</h2>
+      <form id="entry-form" autocomplete="off">
+        <input type="hidden" id="entry-id">
+        <label>
+          Title
+          <input type="text" id="f-title" required maxlength="120" placeholder="e.g. CORS blocked fetch to API">
+        </label>
+        <label>
+          Error message
+          <textarea id="f-message" rows="3" placeholder="Paste the exact error text"></textarea>
+        </label>
+        <label>
+          What it means / cause
+          <textarea id="f-cause" rows="3"></textarea>
+        </label>
+        <label>
+          Fix / solution
+          <textarea id="f-solution" rows="3"></textarea>
+        </label>
+        <label>
+          Tags <span class="hint">(comma separated)</span>
+          <input type="text" id="f-tags" placeholder="javascript, http, cors">
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="primary" id="btn-save">Save</button>
+          <button type="button" class="ghost" id="btn-cancel" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section aria-labelledby="list-title">
+      <div class="list-header">
+        <h2 id="list-title">Saved errors <span id="count" class="hint"></span></h2>
+      </div>
+      <input type="search" id="search" placeholder="Search title, message, tags…" aria-label="Search entries">
+      <ul id="list" class="list"></ul>
+      <p id="empty" class="empty" hidden>No errors saved yet. Add your first one above.</p>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
