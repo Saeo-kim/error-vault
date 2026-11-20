@@ -1,0 +1,23 @@
+# Local PostgreSQL for development.
+#   docker compose up -d db
+# Connection details match backend/src/main/resources/application.yml defaults.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: error-vault-db
+    environment:
+      POSTGRES_DB: errorvault
+      POSTGRES_USER: errorvault
+      POSTGRES_PASSWORD: errorvault
+    ports:
+      - "5432:5432"
+    volumes:
+      - error-vault-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U errorvault -d errorvault"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  error-vault-pgdata:
