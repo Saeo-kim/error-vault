@@ -1,6 +1,7 @@
 import type { ErrorRecord, ErrorRecordInput } from './types'
 
 const BASE = '/api/errors'
+const UNAUTHORIZED_EVENT = 'ev:unauthorized'
 
 /** Error thrown for non-2xx responses. `fields` holds per-field validation messages. */
 export class ApiError extends Error {
@@ -26,6 +27,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   const body = await response.json().catch(() => null)
+  if (response.status === 401) {
+    window.dispatchEvent(new Event(UNAUTHORIZED_EVENT))
+  }
   if (!response.ok) {
     const message = (body && (body.detail || body.title)) || `Request failed (${response.status})`
     throw new ApiError(response.status, message, (body && body.fields) || {})

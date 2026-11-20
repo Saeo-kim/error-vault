@@ -402,3 +402,20 @@ textarea {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ---------- Sign-in and header actions ---------- */
+.header-action {
+  margin-left: auto;
+  min-height: var(--tap-target);
+  padding: 6px 12px;
+}
+
+.login {
+  max-width: 420px;
+  margin: 40px auto 0;
+}
+
+.center {
+  text-align: center;
+  margin-top: 40px;
+}
