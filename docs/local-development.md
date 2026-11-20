@@ -55,7 +55,8 @@ npm run lint           # oxlint
 npm run build          # type-check and production build
 npm test               # Vitest unit tests
 npx playwright install # only if you do not have a Chromium/Chrome for Playwright
-npm run test:e2e       # Playwright mobile-viewport tests (starts the dev server)
+npm run test:e2e       # Playwright mobile-viewport tests. Start the backend and database first:
+                       # the error-flow test calls the real API on localhost:8080
 ```
 If a Chromium binary is already on the machine, set `PLAYWRIGHT_CHROMIUM_PATH` to its
 path to skip the browser download.

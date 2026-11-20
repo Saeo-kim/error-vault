@@ -15,7 +15,7 @@
 Phase 1 does not include any error-record feature. The frontend home page is a
 placeholder. Phase 1 is "ready to build on", not "app finished".
 
-## Phase 2 — MVP: capture, browse and reuse errors
+## Phase 2 — MVP: capture, browse and reuse errors (complete)
 
 **Goal:** Record an error with context, find it again quickly on a phone, and edit or
 delete it.
@@ -38,11 +38,14 @@ delete it.
 - Offline caching of record data (the app shell works offline; records need network).
 - Full-text search ranking, attachments, export, AI-assisted explanations.
 
-### MVP acceptance criteria
+### MVP acceptance criteria (verified)
 - A user on a 390×844 viewport can create an error, find it by a word in its message,
   open it, edit it, and delete it, all through the UI.
 - All backend and frontend tests pass; `npm run build` and `./mvnw verify` succeed.
 - The flow passes in Playwright against the running backend and local PostgreSQL.
+
+**Result:** 16 backend tests and 12 frontend unit tests pass; 5 Playwright mobile tests pass
+(Pixel 7 profile, 390px wide) against the real backend and PostgreSQL 16.15.
 
 ## Later phases (not planned in detail yet)
 - Phase 3: Authentication, richer tagging, related-error suggestions.

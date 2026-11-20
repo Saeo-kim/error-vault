@@ -59,8 +59,8 @@ error-vault/
 - **Configuration:** defaults point at the local Docker Compose database; every
   value can be overridden with `SPRING_DATASOURCE_*` / `SERVER_PORT` environment
   variables.
-- **Errors:** validation failures return HTTP 400 with field messages; missing
-  records return HTTP 404 (both implemented in Phase 2).
+- **Errors:** RFC 9457 problem responses. Validation failures return HTTP 400 with a
+  `fields` map; missing records return HTTP 404.
 - **Health:** `/actuator/health` (liveness and readiness probes enabled).
 
 ## Data model (Phase 2 MVP)
@@ -77,18 +77,18 @@ Table `error_record` (created by migration `V2__error_record.sql`):
 | `environment` | `VARCHAR(100)` null           | e.g. "local", "staging"                 |
 | `root_cause`  | `TEXT` null                   | Your understanding of the cause         |
 | `resolution`  | `TEXT` null                   | What fixed it                           |
-| `tags`        | `VARCHAR(500)` null           | Comma-separated, normalised to lowercase |
+| `tags`        | `VARCHAR(500)` null           | Stored comma-separated, lowercase, de-duplicated; max 10 tags of 40 characters |
 | `created_at`  | `TIMESTAMPTZ` not null        |                                        |
 | `updated_at`  | `TIMESTAMPTZ` not null        |                                        |
 
-Indexes: `created_at` (default sort) and a B-tree on `title`. Full-text search is
-out of scope for the MVP (see roadmap).
+Index: `created_at DESC` (default sort). Search uses case-insensitive `LIKE` with escaped
+wildcards; full-text search is out of scope for the MVP (see roadmap).
 
 ## REST API (Phase 2 MVP)
 
 | Method | Path                  | Purpose                                           |
 |--------|-----------------------|---------------------------------------------------|
-| GET    | `/api/errors`         | List, newest first. Optional `q` (title/message/tags contains) and `tag`. |
+| GET    | `/api/errors`         | List, newest first. Optional `q` (title/message/tags contains, case-insensitive) and `tag` (whole-tag match). |
 | POST   | `/api/errors`         | Create a record. Returns 201 with the record.     |
 | GET    | `/api/errors/{id}`    | Fetch one record. 404 if missing.                 |
 | PUT    | `/api/errors/{id}`    | Replace an editable record. 404 if missing.       |
@@ -99,8 +99,10 @@ out of scope for the MVP (see roadmap).
 
 - **Mobile first:** base CSS targets 360–430px phones; wider layouts are added with
   `min-width` media queries. Touch targets are at least 44px. No horizontal scrolling.
-- **Routing:** React Router. Routes: `/` (list), `/errors/new`, `/errors/:id`,
-  `/errors/:id/edit`. Unknown paths show a not-found page.
+- **Routing:** React Router. Routes: `/` (list with search and tag filters),
+  `/errors/new`, `/errors/:id` (detail, delete), `/errors/:id/edit`. Unknown paths show a not-found page.
+- **Shared form model:** `src/components/errorFormModel.ts` holds validation and tag parsing;
+  the same limits as the server are enforced on the client for fast feedback.
 - **Data access:** a small typed `fetch` wrapper in `src/api/` calling `/api/*`.
 - **PWA:** `vite-plugin-pwa` generates a web manifest and a Workbox service worker
   that precaches the app shell, so the app opens offline. Record data is fetched

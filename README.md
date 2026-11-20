@@ -9,8 +9,8 @@ and PostgreSQL storage.
 ## Status
 - **Phase 1 (foundation): complete.** Project structure, mobile-first frontend shell,
   backend skeleton, database migrations and local setup are in place.
-- **Phase 2 (MVP): in progress.** Capture, browse and reuse errors. See
-  [docs/roadmap.md](docs/roadmap.md).
+- **Phase 2 (MVP): complete.** Capture, search, view, edit and delete errors on a phone.
+  See [docs/roadmap.md](docs/roadmap.md).
 
 ## Project layout
 | Path | Contents |
@@ -39,7 +39,7 @@ Full instructions, troubleshooting, and the test commands are in
 ## Tests
 ```bash
 cd backend && ./mvnw verify
-cd frontend && npm test && npm run build && npm run test:e2e
+cd frontend && npm test && npm run build && npm run test:e2e   # e2e needs the backend running
 ```
 
 ## Documentation
