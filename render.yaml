@@ -1,0 +1,40 @@
+# Render Blueprint: one web service (Docker) and one PostgreSQL database.
+# Create it in Render: New → Blueprint → select this repository.
+# Render asks for APP_AUTH_PASSWORD (the password you will type on your iPhone and PC).
+services:
+  - type: web
+    name: error-vault
+    runtime: docker
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: APP_AUTH_PASSWORD
+        sync: false
+      - key: APP_AUTH_SECURE_COOKIE
+        value: "true"
+      - key: DB_HOST
+        fromDatabase:
+          name: error-vault-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: error-vault-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: error-vault-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: error-vault-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: error-vault-db
+          property: password
+
+databases:
+  - name: error-vault-db
+    databaseName: errorvault
+    user: errorvault
+    plan: free

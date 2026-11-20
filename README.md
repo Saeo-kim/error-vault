@@ -47,3 +47,4 @@ cd frontend && npm test && npm run build && npm run test:e2e   # e2e needs the b
 - [Architecture decisions](docs/decisions.md)
 - [Roadmap](docs/roadmap.md)
 - [Local development](docs/local-development.md)
+- [Deployment (Render, iPhone install)](docs/deployment.md)

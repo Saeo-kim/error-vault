@@ -28,6 +28,7 @@ cd backend
 ```
 - API and health: http://localhost:8080/actuator/health
 - Flyway applies all migrations in `src/main/resources/db/migration` on startup.
+- To require sign-in locally, set `APP_AUTH_PASSWORD` (blank means no login).
 - To use another database, set `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`
   and `SPRING_DATASOURCE_PASSWORD`.
 
